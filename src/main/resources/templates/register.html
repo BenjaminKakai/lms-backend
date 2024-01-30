@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Register</title>
+</head>
+<body>
+<div class="register-container">
+    <h2>Register</h2>
+    <!-- Bind the form to the 'user' attribute -->
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <!-- Use th:field to bind input fields to the User object properties -->
+        <div><label>Username: <input type="text" th:field="*{username}"/></label></div>
+        <div><label>Password: <input type="password" th:field="*{password}"/></label></div>
+        <div><input type="submit" value="Register"/></div>
+    </form>
+</div>
+</body>
+</html>

@@ -14,7 +14,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/books")
 public class BookApiController {
-
     private final BookService bookService;
 
     @Autowired
@@ -24,6 +23,7 @@ public class BookApiController {
 
     @GetMapping
     public ResponseEntity<List<Book>> getAllBooks() {
+        System.out.println("Getting all books"); // Added log statement
         List<Book> books = bookService.findAllBooks();
         return ResponseEntity.ok(books);
     }
@@ -53,4 +53,12 @@ public class BookApiController {
         bookService.deleteBook(id);
         return ResponseEntity.noContent().build();
     }
+
+    // Test endpoint
+    @GetMapping("/test")
+    public String testEndpoint() {
+        return "Test endpoint response";
+    }
+
+    // ... any additional methods ...
 }

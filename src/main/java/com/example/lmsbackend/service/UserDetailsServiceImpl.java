@@ -7,7 +7,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Service;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import java.util.stream.Collectors;
 
 @Service
@@ -25,10 +24,14 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User not found");
         }
+
+        // Convert roles to authorities, ensuring compatibility with Spring Security's expected format
         return new org.springframework.security.core.userdetails.User(
                 user.getUsername(),
                 user.getPassword(),
-                user.getRoles().stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList())
+                user.getRoles().stream()
+                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role)) // Prefixing role with "ROLE_" if not already prefixed
+                        .collect(Collectors.toSet()) // Collecting as a Set to ensure uniqueness
         );
     }
 }

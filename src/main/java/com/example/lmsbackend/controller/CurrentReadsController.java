@@ -1,11 +1,12 @@
 package com.example.lmsbackend.controller;
 
-import com.example.lmsbackend.model.CurrentRead;
 import com.example.lmsbackend.service.CurrentReadsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/currentReads")
@@ -20,16 +21,12 @@ public class CurrentReadsController {
 
     @GetMapping("/user/{userId}")
     public String listUserCurrentReads(@PathVariable Long userId, Model model) {
+        // Fetch the current reads for the specified user and add them to the model
         model.addAttribute("currentReads", currentReadsService.getCurrentReadsByUserId(userId));
-        return "userCurrentReads"; // Thymeleaf template for displaying user's current reads
+        // Return the Thymeleaf template for displaying user's current reads
+        return "userCurrentReads";
     }
 
-    @PostMapping
-    public String addCurrentRead(@ModelAttribute CurrentRead currentRead) {
-        currentReadsService.addCurrentRead(currentRead);
-        // Assuming the User object is correctly set in the CurrentRead object
-        return "redirect:/currentReads/user/" + currentRead.getUser().getId();
-    }
-
-    // Other methods for managing current reads...
+    // Removed the addCurrentRead method to align with RESTful approach
+    // Other methods for managing current reads through the web interface can be added here if necessary
 }

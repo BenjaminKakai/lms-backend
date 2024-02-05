@@ -5,19 +5,21 @@ public class BookDTO {
     private String name;
     private String isbn;
     private String author;
+    private Boolean isAvailable; // Optional: Include availability flag
 
     // Constructors
     public BookDTO() {
     }
 
-    public BookDTO(Long id, String name, String isbn, String author) {
+    public BookDTO(Long id, String name, String isbn, String author, Boolean isAvailable) {
         this.id = id;
         this.name = name;
         this.isbn = isbn;
         this.author = author;
+        this.isAvailable = isAvailable; // Initialize with availability if provided
     }
 
-    // Getters and setters
+    // Getters and setters for all fields
     public Long getId() {
         return id;
     }
@@ -50,5 +52,13 @@ public class BookDTO {
         this.author = author;
     }
 
-    // toString, equals, and hashCode methods can be added for better logging and functionality
+    public Boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(Boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+    // Optional: Override toString, equals, and hashCode methods for better logging and functionality
 }

@@ -34,6 +34,8 @@ public class BookService {
     public Book createBook(BookDTO bookDTO) {
         Book book = new Book();
         updateBookEntityFromDTO(book, bookDTO);
+        // Correct method call to set book availability
+        book.setIsAvailable(true); // Books are available by default when created
         return bookRepository.save(book);
     }
 
@@ -42,6 +44,7 @@ public class BookService {
         return bookRepository.findById(id)
                 .map(book -> {
                     updateBookEntityFromDTO(book, bookDTO);
+                    // No need to explicitly set availability here unless your DTO includes that info
                     return bookRepository.save(book);
                 });
     }
@@ -51,10 +54,23 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
+    @Transactional
+    public void updateBookAvailability(Long bookId, boolean isAvailable) {
+        bookRepository.findById(bookId).ifPresent(book -> {
+            // Correct method call to update book availability
+            book.setIsAvailable(isAvailable);
+            bookRepository.save(book);
+        });
+    }
+
     private void updateBookEntityFromDTO(Book book, BookDTO bookDTO) {
         book.setName(bookDTO.getName());
         book.setAuthor(bookDTO.getAuthor());
         book.setIsbn(bookDTO.getIsbn());
-        // Add other fields here if BookDTO has more fields
+        // Here, add logic if your DTO includes availability info
+        // For example:
+        // if (bookDTO.isAvailable() != null) {
+        //     book.setIsAvailable(bookDTO.isAvailable());
+        // }
     }
 }

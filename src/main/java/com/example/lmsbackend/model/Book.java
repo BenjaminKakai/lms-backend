@@ -11,13 +11,13 @@ public class Book {
     private Long id;
 
     private String isbn;
-
     private String name;
-
     private String author;
+    private boolean isAvailable; // Field to track availability
 
     // Constructors
     public Book() {
+        this.isAvailable = true; // Books are available by default
     }
 
     public Book(Long id, String name, String isbn, String author) {
@@ -25,6 +25,7 @@ public class Book {
         this.name = name;
         this.isbn = isbn;
         this.author = author;
+        this.isAvailable = true; // Initialize the book as available by default
     }
 
     // Getters and setters
@@ -60,5 +61,26 @@ public class Book {
         this.author = author;
     }
 
-    // toString, equals, and hashCode methods can be added for better logging and functionality
+    public boolean isAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(boolean isAvailable) {
+        this.isAvailable = isAvailable;
+    }
+
+    // toString method as you've defined
+    @Override
+    public String toString() {
+        // Your existing toString implementation
+        return "Book{" +
+                "id=" + id +
+                ", isbn='" + isbn + '\'' +
+                ", name='" + name + '\'' +
+                ", author='" + author + '\'' +
+                ", isAvailable=" + isAvailable +
+                '}';
+    }
+
+    // Consider implementing equals and hashCode methods
 }

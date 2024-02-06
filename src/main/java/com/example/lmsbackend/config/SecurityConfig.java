@@ -30,10 +30,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable()) // Use Customizer to disable CSRF
+                .csrf(csrf -> csrf.disable()) // Disable CSRF
                 .authorizeRequests(authz -> authz
-                        .requestMatchers("/", "/home", "/api/auth/**", "/api/books/**").permitAll() // Permit unauthenticated access to these paths
-                        .anyRequest().authenticated())
+                        .requestMatchers("/", "/home", "/api/auth/**", "/api/books/**").permitAll() // Public endpoints
+                        .requestMatchers("/api/users/profile").authenticated() // Require authentication for profile
+                        .anyRequest().authenticated()) // Require authentication for any other request
                 .exceptionHandling(ex -> ex
                         .authenticationEntryPoint(jwtAuthenticationEntryPoint))
                 .sessionManagement(session -> session

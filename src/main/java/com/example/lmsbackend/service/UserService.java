@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -23,9 +24,12 @@ public class UserService {
     }
 
     public User createUser(String username, String rawPassword) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new IllegalStateException("Username already taken");
+        }
         User user = new User();
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(rawPassword));
+        user.setPassword(passwordEncoder.encode(rawPassword)); // Encrypt the password
         return userRepository.save(user);
     }
 
@@ -34,31 +38,30 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public Optional<User> findUserById(Long userId) {
+        return userRepository.findById(userId);
+    }
+
     public User updateUser(Long userId, User updatedUser) {
         return userRepository.findById(userId)
                 .map(user -> {
                     user.setUsername(updatedUser.getUsername());
-                    user.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                    // Update other fields as necessary
+                    user.setPassword(updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty() ? passwordEncoder.encode(updatedUser.getPassword()) : user.getPassword());
+                    // Here, consider updating other fields as necessary
                     return userRepository.save(user);
-                }).orElseThrow(() -> new RuntimeException("User not found"));
+                }).orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + userId));
     }
 
     public boolean isAdmin(Long userId) {
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return user.getRoles().contains("ROLE_ADMIN");
+        return findUserById(userId)
+                .map(user -> user.getRoles().contains("ROLE_ADMIN"))
+                .orElse(false);
     }
 
     public void addRoleToUser(String username, String role) {
-        User user = userRepository.findByUsername(username);
-        if (user != null) {
-            user.getRoles().add(role);
-            userRepository.save(user);
-        } else {
-            throw new UsernameNotFoundException("User not found");
-        }
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+        user.getRoles().add(role);
+        userRepository.save(user);
     }
-
-    // Additional methods for user management can be added here
 }

@@ -117,3 +117,8 @@ openssl rand -base64 32
 
 For any queries or further assistance with LMSBackend, please open an issue in the project's GitHub repository.
 
+**Simple Illustration of calling the Books from the Frontend**
+![image](https://github.com/BenjaminKakai/lms-backend/assets/114109979/a09c1303-31bb-43ac-b5b3-18b32e289eb0)
+
+
+You can Check the Entire Frontend Code from here; https://github.com/BenjaminKakai/LibrarymanagementSystem-frontend.git

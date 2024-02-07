@@ -2,9 +2,9 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ main ] # Updated to 'main'
+    branches: [ main ] # Ensure this matches your development branch
   pull_request:
-    branches: [ main ] # Updated to 'main'
+    branches: [ main ] # Ensure this matches your development branch
 
 jobs:
   build-and-test:
@@ -18,7 +18,10 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-
+          
+      - name: Set Spring Profile
+        run: echo "SPRING_PROFILES_ACTIVE=ci" >> $GITHUB_ENV
+      
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
@@ -29,6 +32,7 @@ jobs:
         run: ./gradlew test
 
   publish:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main' # Run this job only on push to main
     needs: build-and-test
     runs-on: ubuntu-latest
     steps:
@@ -38,8 +42,8 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-          server-id: github # Value of the distributionManagement/repository/id field of the pom.xml
-          settings-path: ${{ github.workspace }} # location for the settings.xml file
+          server-id: github # Ensure this matches the id in your gradle settings for GitHub Packages
+          settings-path: ${{ github.workspace }} # This might be needed if you're using Maven
 
       - name: Publish to GitHub Packages
         run: ./gradlew publish

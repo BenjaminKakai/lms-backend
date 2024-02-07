@@ -2,7 +2,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.2.2'
 	id 'io.spring.dependency-management' version '1.1.4'
-	id 'maven-publish' // Add this line
+	id 'maven-publish' // This line is kept, assuming you might want to use publishing features later.
 }
 
 group = 'com.example'
@@ -57,22 +57,24 @@ tasks.named('test') {
 	useJUnitPlatform()
 }
 
-// Publishing configuration
+/*
+// Commented out to disable publishing
 publishing {
-	publications {
-		mavenJava(MavenPublication) {
-			from components.java
-			// Define the artifact details if needed
-		}
-	}
-	repositories {
-		maven {
-			name = 'GitHubPackages'
-			url = uri("https://github.com/BenjaminKakai/lms.git") // Replace with your GitHub username and repo
-			credentials {
-				username = project.findProperty("gpr.user") ?: System.getenv("BenjaminKakai")
-				password = project.findProperty("gpr.key") ?: System.getenv("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")
-			}
-		}
-	}
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+            // Define the artifact details if needed
+        }
+    }
+    repositories {
+        maven {
+            name = 'GitHubPackages'
+            url = uri("https://github.com/BenjaminKakai/lms.git") // Replace with your GitHub username and repo
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("BenjaminKakai")
+                password = project.findProperty("gpr.key") ?: System.getenv("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")
+            }
+        }
+    }
 }
+*/

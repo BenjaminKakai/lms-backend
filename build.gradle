@@ -70,7 +70,7 @@ publishing {
 			name = 'GitHubPackages'
 			url = uri("https://github.com/BenjaminKakai/lms.git") // Replace with your GitHub username and repo
 			credentials {
-				username = project.findProperty("gpr.user") ?: System.getenv("Benjamin Kakai")
+				username = project.findProperty("gpr.user") ?: System.getenv("BenjaminKakai")
 				password = project.findProperty("gpr.key") ?: System.getenv("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")
 			}
 		}
